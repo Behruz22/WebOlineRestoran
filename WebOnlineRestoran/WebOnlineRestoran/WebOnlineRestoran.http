@@ -1,0 +1,6 @@
+@WebOnlineRestoran_HostAddress = http://localhost:5065
+
+GET {{WebOnlineRestoran_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
