@@ -5,7 +5,7 @@ using WebOnlineRestoran.Models;
 namespace WebOnlineRestoran.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class OrderController : ControllerBase
 {
     private readonly WebDbContext _context;
@@ -14,33 +14,33 @@ public class OrderController : ControllerBase
         _context = webDbContext;
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public IActionResult GetList()
     {
         return Ok(_context.Orders.ToList());
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public IActionResult GetById(int id)
     {
         return Ok(_context.Orders.FirstOrDefault(o => o.Id == id));
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public IActionResult Create(Order order)
     {
         _context.Orders.Add(order);
         return Ok(_context.SaveChanges());
     }
 
-    [HttpPut("[action]")]
+    [HttpPut]
     public IActionResult Update(Order order)
     {
         _context.Orders.Update(order);
         return Ok(_context.SaveChanges());
     }
 
-    [HttpDelete("[action]")]
+    [HttpDelete]
     public IActionResult Delete(int id)
     {
         var order = _context.Orders.FirstOrDefault(o => o.Id == id);

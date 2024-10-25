@@ -5,7 +5,7 @@ using WebOnlineRestoran.Models;
 namespace WebOnlineRestoran.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class CategoryController : ControllerBase
 {
     private readonly WebDbContext _context;
@@ -14,26 +14,26 @@ public class CategoryController : ControllerBase
         _context = webDbContext;
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public IActionResult GetList()
     {
         return Ok(_context.Categories.ToList());
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public IActionResult GetById(int id)
     {
         return Ok(_context.Categories.FirstOrDefault(c => c.Id == id));
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public IActionResult Create(Category category)
     {
         _context.Categories.Add(category);
         return Ok(_context.SaveChanges());
     }
 
-    [HttpDelete("[action]")]
+    [HttpDelete]
     public IActionResult Delete(int id)
     {
         var category = _context.Categories.FirstOrDefault(c => c.Id == id);
@@ -41,7 +41,7 @@ public class CategoryController : ControllerBase
         return Ok(_context.SaveChanges());
     }
 
-    [HttpPut("[action]")]
+    [HttpPut]
     public IActionResult Update(Category category)
     {
         _context.Categories.Update(category);
