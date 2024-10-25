@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebOnlineRestoran.Data;
 using WebOnlineRestoran.Models;
 
@@ -6,10 +7,10 @@ namespace WebOnlineRestoran.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AdminController : ControllerBase
+public class OrderDetailsController : ControllerBase
 {
     private readonly WebDbContext _context;
-    public AdminController(WebDbContext webDbContext)
+    public OrderDetailsController(WebDbContext webDbContext)
     {
         _context = webDbContext;
     }
@@ -17,34 +18,35 @@ public class AdminController : ControllerBase
     [HttpGet("[action]")]
     public IActionResult GetList()
     {
-        return Ok(_context.Admins.ToList());
+        return Ok(_context.OrderDetails.ToList());
     }
 
     [HttpGet("[action]")]
     public IActionResult GetById(int id)
     {
-        return Ok(_context.Admins.Where(a => a.Id == id));
+        return Ok(_context.OrderDetails.FirstOrDefault(x => x.Id == id));
     }
 
     [HttpPost("[action]")]
-    public IActionResult Create(Admin admin)
+    public IActionResult Create(OrderDetails details)
     {
-        _context.Admins.Add(admin);
+        _context.OrderDetails.Add(details);
         return Ok(_context.SaveChanges());
     }
 
     [HttpPut("[action]")]
-    public IActionResult Update(Admin admin)
+    public IActionResult Update(OrderDetails details)
     {
-        _context.Admins.Update(admin);
+        _context.OrderDetails.Update(details);
         return Ok(_context.SaveChanges());
     }
 
     [HttpDelete("[action]")]
     public IActionResult Delete(int id)
     {
-        var admin = _context.Admins.FirstOrDefault(x => x.Id == id);
-        _context.Admins.Remove(admin);
+        var details = _context.OrderDetails.FirstOrDefault(i => i.Id == id);
+        _context.OrderDetails.Remove(details);
         return Ok(_context.SaveChanges());
     }
+        
 }

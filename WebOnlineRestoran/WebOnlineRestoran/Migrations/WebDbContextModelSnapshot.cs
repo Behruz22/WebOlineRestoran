@@ -65,33 +65,6 @@ namespace WebOnlineRestoran.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("WebOnlineRestoran.Models.Food", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Foods");
-                });
-
             modelBuilder.Entity("WebOnlineRestoran.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -120,7 +93,7 @@ namespace WebOnlineRestoran.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("WebOnlineRestoran.Models.OrderItem", b =>
+            modelBuilder.Entity("WebOnlineRestoran.Models.OrderDetails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,25 +101,25 @@ namespace WebOnlineRestoran.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("FoodId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FoodId");
-
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Items");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("WebOnlineRestoran.Models.Payment", b =>
@@ -173,6 +146,33 @@ namespace WebOnlineRestoran.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("WebOnlineRestoran.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("WebOnlineRestoran.Models.User", b =>
@@ -203,25 +203,6 @@ namespace WebOnlineRestoran.Migrations
                     b.Navigation("Admin");
                 });
 
-            modelBuilder.Entity("WebOnlineRestoran.Models.Food", b =>
-                {
-                    b.HasOne("WebOnlineRestoran.Models.Admin", "Admin")
-                        .WithMany("Foods")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebOnlineRestoran.Models.Category", "Category")
-                        .WithMany("Foods")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("WebOnlineRestoran.Models.Order", b =>
                 {
                     b.HasOne("WebOnlineRestoran.Models.User", "User")
@@ -233,23 +214,23 @@ namespace WebOnlineRestoran.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebOnlineRestoran.Models.OrderItem", b =>
+            modelBuilder.Entity("WebOnlineRestoran.Models.OrderDetails", b =>
                 {
-                    b.HasOne("WebOnlineRestoran.Models.Food", "Food")
-                        .WithMany("OrdersItems")
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebOnlineRestoran.Models.Order", "Order")
-                        .WithMany("Items")
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Food");
+                    b.HasOne("WebOnlineRestoran.Models.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("WebOnlineRestoran.Models.Payment", b =>
@@ -271,26 +252,45 @@ namespace WebOnlineRestoran.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WebOnlineRestoran.Models.Product", b =>
+                {
+                    b.HasOne("WebOnlineRestoran.Models.Admin", "Admin")
+                        .WithMany("Products")
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebOnlineRestoran.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("WebOnlineRestoran.Models.Admin", b =>
                 {
                     b.Navigation("Categories");
 
-                    b.Navigation("Foods");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("WebOnlineRestoran.Models.Category", b =>
                 {
-                    b.Navigation("Foods");
-                });
-
-            modelBuilder.Entity("WebOnlineRestoran.Models.Food", b =>
-                {
-                    b.Navigation("OrdersItems");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("WebOnlineRestoran.Models.Order", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("WebOnlineRestoran.Models.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("WebOnlineRestoran.Models.User", b =>

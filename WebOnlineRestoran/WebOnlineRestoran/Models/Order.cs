@@ -7,13 +7,13 @@ public class Order
 {
     public int Id { get; set; }
     public float TotalPrice { get; set; }
-    public Status Status { get; set; } = Status.Accepted;
+    public Status Status { get; set; }
     public int UserId { get; set; }
     [JsonIgnore]
-    public User? User { get; set; }  
+    public User? User { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [JsonIgnore]
     public DateTime OrderDate { get; set; } = DateTime.Now;
     [JsonIgnore]
-    public virtual ICollection<OrderItem>? Items { get; set; }
+    public virtual ICollection<OrderDetails>? OrderDetails { get; set; }
 }

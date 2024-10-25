@@ -2,7 +2,7 @@
 
 namespace WebOnlineRestoran.Models;
 
-public class Food 
+public class Product 
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -15,5 +15,5 @@ public class Food
     public virtual Admin? Admin { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<OrderItem>? OrdersItems { get; set; }
+    public virtual ICollection<OrderDetails>? OrderDetails { get; set; }
 }

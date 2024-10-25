@@ -11,6 +11,6 @@ public class Admin
     public virtual ICollection<Category>? Categories { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Food>? Foods { get; set; }
+    public virtual ICollection<Product>? Products { get; set; }
 
 }

@@ -82,7 +82,7 @@ namespace WebOnlineRestoran.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Foods",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -93,15 +93,15 @@ namespace WebOnlineRestoran.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Foods", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Foods_Admins_AdminId",
+                        name: "FK_Products_Admins_AdminId",
                         column: x => x.AdminId,
                         principalTable: "Admins",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Foods_Categories_CategoryId",
+                        name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
@@ -136,7 +136,7 @@ namespace WebOnlineRestoran.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -144,21 +144,21 @@ namespace WebOnlineRestoran.Migrations
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     OrderId = table.Column<int>(type: "integer", nullable: false),
-                    FoodId = table.Column<int>(type: "integer", nullable: false)
+                    ProductId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Items_Foods_FoodId",
-                        column: x => x.FoodId,
-                        principalTable: "Foods",
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
+                        name: "FK_OrderDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -169,24 +169,14 @@ namespace WebOnlineRestoran.Migrations
                 column: "AdminId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Foods_AdminId",
-                table: "Foods",
-                column: "AdminId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Foods_CategoryId",
-                table: "Foods",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_FoodId",
-                table: "Items",
-                column: "FoodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_OrderId",
-                table: "Items",
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_ProductId",
+                table: "OrderDetails",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -202,19 +192,29 @@ namespace WebOnlineRestoran.Migrations
                 name: "IX_Payments_UserId",
                 table: "Payments",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_AdminId",
+                table: "Products",
+                column: "AdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryId",
+                table: "Products",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "Foods");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Orders");

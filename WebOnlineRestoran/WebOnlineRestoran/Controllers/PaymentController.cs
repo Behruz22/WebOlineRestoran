@@ -6,10 +6,10 @@ namespace WebOnlineRestoran.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AdminController : ControllerBase
+public class PaymentController : ControllerBase
 {
     private readonly WebDbContext _context;
-    public AdminController(WebDbContext webDbContext)
+    public PaymentController(WebDbContext webDbContext)
     {
         _context = webDbContext;
     }
@@ -17,34 +17,34 @@ public class AdminController : ControllerBase
     [HttpGet("[action]")]
     public IActionResult GetList()
     {
-        return Ok(_context.Admins.ToList());
+        return Ok(_context.Payments.ToList());
     }
 
     [HttpGet("[action]")]
     public IActionResult GetById(int id)
     {
-        return Ok(_context.Admins.Where(a => a.Id == id));
+        return Ok(_context.Payments.ToList());
     }
 
     [HttpPost("[action]")]
-    public IActionResult Create(Admin admin)
+    public IActionResult Create(Payment payment)
     {
-        _context.Admins.Add(admin);
-        return Ok(_context.SaveChanges());
-    }
-
-    [HttpPut("[action]")]
-    public IActionResult Update(Admin admin)
-    {
-        _context.Admins.Update(admin);
+        _context.Payments.Add(payment);
         return Ok(_context.SaveChanges());
     }
 
     [HttpDelete("[action]")]
     public IActionResult Delete(int id)
     {
-        var admin = _context.Admins.FirstOrDefault(x => x.Id == id);
-        _context.Admins.Remove(admin);
+        var payment = _context.Payments.FirstOrDefault(x => x.Id == id);
+        _context.Payments.Remove(payment);
+        return Ok(_context.SaveChanges());
+    }
+
+    [HttpPut("[action]")]
+    public IActionResult UpdatePayment(Payment payment)
+    {
+        _context.Payments.Update(payment);
         return Ok(_context.SaveChanges());
     }
 }

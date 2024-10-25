@@ -8,7 +8,7 @@ public class Category
     public string Name { get; set; }
     public string Description { get; set; } 
     [JsonIgnore]
-    public virtual ICollection<Food>? Foods { get; set; }
+    public virtual ICollection<Product>? Products { get; set; }
     public int AdminId { get; set; }
     [JsonIgnore]
     public virtual Admin? Admin { get; set; }
